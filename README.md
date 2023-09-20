@@ -6,10 +6,12 @@ To Compile on Bitvise SSH Client After connected to UMICH Server-
 
 Server:
 Input: g++ ServerChat.cpp -o sc
-Then Type: ./sc
+
+./sc
 
 
 
 Client:
 Input: g++ ClientChat.cpp -o cc
-Then Type: ./cc
+
+./cc
