@@ -111,6 +111,8 @@ int main(int argc, char* argv[]) {
         ID INTEGER PRIMARY KEY AUTOINCREMENT,\
         card_name varchar(10) NOT NULL,\
         card_balance DOUBLE,\
+        card_type TEXT NOT NULL,\
+        rarity TEXT NOT NULL,\
         owner_id TEXT,\
         FOREIGN KEY(owner_id) REFERENCES Users(ID)\
     );";
@@ -333,7 +335,7 @@ int main(int argc, char* argv[]) {
         fprintf(stdout, "Pikachu is not present. Attempting to add the card.\n");
 
         // Adds Pikachu to the database
-        sql = "INSERT INTO Pokemon_cards VALUES (1, 'Pikachu', 19.99, 1);";
+        sql = "INSERT INTO Pokemon_cards VALUES (1, 'Pikachu', 19.99, 'Electric', 'Common', 1);";
         rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
 
         if (rc != SQLITE_OK) {
@@ -366,7 +368,7 @@ int main(int argc, char* argv[]) {
         fprintf(stdout, "Pikachu is not present. Attempting to add the card.\n");
 
         // Adds Pikachu to the database
-        sql = "INSERT INTO Pokemon_cards VALUES (1, 'Pikachu', 19.99, 1);";
+        sql = "INSERT INTO Pokemon_cards VALUES (1, 'Pikachu', 19.99, 'Electric', 'Common', 1);";
         rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
 
         if (rc != SQLITE_OK) {
@@ -398,7 +400,7 @@ int main(int argc, char* argv[]) {
         fprintf(stdout, "Charizard is not present. Attempting to add the card.\n");
 
         // Adds Pikachu to the database
-        sql = "INSERT INTO Pokemon_cards VALUES (2, 'Charizard', 15.49, 1);";
+        sql = "INSERT INTO Pokemon_cards VALUES (2, 'Charizard', 15.49, 'Fire', 'Rare', 1);";
         rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
 
         if (rc != SQLITE_OK) {
@@ -431,7 +433,7 @@ int main(int argc, char* argv[]) {
         fprintf(stdout, "Bulbasaur is not present. Attempting to add the card.\n");
 
         // Adds Pikachu to the database
-        sql = "INSERT INTO Pokemon_cards VALUES (3, 'Bulbasaur', 11.9, 3);";
+        sql = "INSERT INTO Pokemon_cards VALUES (3, 'Bulbasaur', 11.9, 'Grass', 'Common', 3);";
         rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
 
         if (rc != SQLITE_OK) {
@@ -464,7 +466,7 @@ int main(int argc, char* argv[]) {
         fprintf(stdout, "Squirtle is not present. Attempting to add the card.\n");
 
         // Adds Pikachu to the database
-        sql = "INSERT INTO Pokemon_cards VALUES (4, 'Squirtle', 18.99, 4);";
+        sql = "INSERT INTO Pokemon_cards VALUES (4, 'Squirtle', 18.99, 'Water', 'Uncommon', 4);";
         rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
 
         if (rc != SQLITE_OK) {
@@ -497,7 +499,7 @@ int main(int argc, char* argv[]) {
         fprintf(stdout, "Jigglypuff is not present. Attempting to add the card.\n");
 
         // Adds Pikachu to the database
-        sql = "INSERT INTO Pokemon_cards VALUES (5, 'Jigglypuff', 24.99, 5);";
+        sql = "INSERT INTO Pokemon_cards VALUES (5, 'Jigglypuff', 24.99, 'Normal', 'Common', 5);";
         rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
 
         if (rc != SQLITE_OK) {
@@ -978,7 +980,7 @@ void* serverCommands(void* userData) {
                         sendStr = "200 OK\n   No records in the Pokemon Cards Database.";
                     }
                     else {
-                        sendStr = "200 OK\n   The list of records in the Card database:\nCardID  card_name Card_Amount  UserID\n   " + result;
+                        sendStr = "200 OK\n   The list of records in the Card database:\nCardID  card_name Card_Amount  Card_Type  Card_Rarity  UserID\n   " + result;
                     }
                     send(clientID, sendStr.c_str(), sizeof(Buff), 0);
                 }
@@ -1003,7 +1005,7 @@ void* serverCommands(void* userData) {
                         sendStr = "200 OK\n   No records in the Card Database.";
                     }
                     else {
-                        sendStr = "200 OK\n   The list of records in the Card database:\nCardID  card_name Card_Amount  UserID\n   " + result;
+                        sendStr = "200 OK\n   The list of records in the Card database:\nCardID  card_name Card_Amount  Card_Type  Card_Rarity  UserID\n   " + result;
                     }
                     send(clientID, sendStr.c_str(), sizeof(Buff), 0);
                 }
