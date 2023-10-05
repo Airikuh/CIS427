@@ -1,0 +1,18 @@
+TO RUN ON UMICH SERVER CIS 427
+Connect first to global protectant
+Then you can run Bitvise SSH Client
+
+
+
+Make sure you have uploaded both files, the sqlite files (3 total) to the umich server
+
+New Terminal console x 2 for client and server windows
+
+g++ another.cpp -std=c++11 -ldl -pthread sqlite3.o -o server
+./server
+
+
+
+g++ cli.cpp -o client
+./client
+
