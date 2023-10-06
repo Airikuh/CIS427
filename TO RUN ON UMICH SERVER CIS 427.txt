@@ -4,15 +4,29 @@ Then you can run Bitvise SSH Client
 
 
 
-Make sure you have uploaded both files, the sqlite files (3 total) to the umich server
+Make sure you have uploaded both files, the sqlite files (3 Sqlite files total) to the umich server: Bitvise SSH.
 
 New Terminal console x 2 for client and server windows
 
-g++ another.cpp -std=c++11 -ldl -pthread sqlite3.o -o server
+g++ server.cpp -std=c++11 -ldl -pthread sqlite3.o -o server
 ./server
 
 
-
-g++ cli.cpp -o client
+To Run Client Must input IP Address as second parameter when compiling
+g++ client.cpp -o client
 ./client
 
+
+*Must include IP address to compile
+
+LOGIN: There are several options to login with the login command-
+
+LOGIN j_doe Passwrd4
+
+LOGIN j_smith pass456
+
+LOGIN c_brown Snoopy
+
+LOGIN l_van Football
+
+LOGIN l_blanket security23
