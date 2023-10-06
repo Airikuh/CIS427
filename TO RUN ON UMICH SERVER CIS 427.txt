@@ -17,8 +17,6 @@ g++ client.cpp -o client
 ./client
 
 
-*Must include IP address to compile
-
 LOGIN: There are several options to login with the login command-
 
 LOGIN j_doe Passwrd4
