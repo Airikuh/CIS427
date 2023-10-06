@@ -20,7 +20,7 @@
 
 using namespace std;
 
-#define SERVER_PORT 29270
+#define SERVER_PORT 9189
 #define MAX_LINE 256
 
 int main(int argc, char* argv[]) {
