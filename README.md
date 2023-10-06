@@ -6,14 +6,14 @@ To Compile on Bitvise SSH Client After connected to UMICH Server-
 
 Server:
 
-g++ ServerChat.cpp -o sc
+g++ serrver.cpp -o server
 
-./sc
+./server
 
 
 
 Client:
 
-g++ ClientChat.cpp -o cc
+g++ client.cpp -o client
 
-./cc
+./client
