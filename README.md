@@ -6,7 +6,7 @@ To Compile on Bitvise SSH Client After connected to UMICH Server-
 
 Server:
 
-g++ serrver.cpp -o server
+g++ server.cpp -std=c++11 -ldl -pthread sqlite3.o -o server
 
 ./server
 
