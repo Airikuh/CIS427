@@ -224,6 +224,7 @@ int main(int argc, char* argv[]) {
         fprintf(stdout, "Root user is not present. Attempting to add the user.\n");
 
 // Adds the root user
+        //Added email later since it wasn't on the list in the project details but was for client details
         sql = "INSERT INTO Users VALUES (1, 'cis427PokemonCards@abc.com', 'Root', 'User', 'root', 'root01', 100);";
         rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
 
