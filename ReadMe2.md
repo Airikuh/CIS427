@@ -23,14 +23,25 @@ g++ client.cpp -o client
 
 Users you can log in to:
 
-UserID		Password
+UserID and Password:
 
-root 			root01
-j_doe			Passwrd4
-j_smith		Pass456
-c_brown		Snoopy
-l_van			Football
-l_blanket		Security23
+root
+root01
+
+j_doe
+Passwrd4
+
+j_smith		
+Pass456
+
+c_brown
+Snoopy
+
+l_van
+Football
+
+l_blanket
+Security23
 
 
 ## COMMANDS:
