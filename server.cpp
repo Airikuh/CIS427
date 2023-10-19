@@ -1498,7 +1498,7 @@ void DataFromClient()
 
 }
                         else {
-                            cout << "Username or Password Invalid!" << endl;
+                            cout << "403: Username or Password Invalid!" << endl;
                             //should we close the client if they enter invalid credentials?
                            close(nClient[nIndex]);
                            nClient[nIndex] = 0;
