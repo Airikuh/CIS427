@@ -178,5 +178,7 @@ Abeer Waza: developer/documenter
 
 ## Test Cases:
 
+<img width="592" alt="Screen Shot 2023-10-19 at 11 00 39 AM" src="https://github.com/Airikuh/CIS427/assets/114634736/b5d0ae73-3c42-40f0-9e9e-6bad4f7c2102">
+<img width="593" alt="Screen Shot 2023-10-19 at 11 00 51 AM" src="https://github.com/Airikuh/CIS427/assets/114634736/31701be8-585c-4be0-b4ca-e4297d98e956">
 
                                                                             
