@@ -1238,7 +1238,7 @@ else if (command == "LIST") {
                     sql = "SELECT last_name FROM Users WHERE Users.ID=" + id;
                     rc = sqlite3_exec(db, sql.c_str(), callback, ptr, &zErrMsg);
                     user_name += " " + result;
-                    string tempStr = "200 OK\n   New balance for user " + user_name + ": $" + usd_balance;
+                    string tempStr = "200 OK\n   Deposit successfully. New User balance for " + user_name + ": $" + usd_balance;
                     send(clientID, tempStr.c_str(), sizeof(Buff), 0);
                 }
                 else {
