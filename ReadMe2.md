@@ -177,23 +177,6 @@ Abeer Waza: developer/documenter
 
 
 ## Test Cases:
-Test #         	Description of Test			Input Value				    Expected Output	    	   Actual Output		                            Test Pass/Fail
-
-  1   LOGIN: Test valid user/password	LOGIN j_doe Passwrd4		200 OK		                 	200 OK				                              Pass
-
-
-  2		LOGIN: Test Invalid input		LOGIN j_doe Passw11	  403 Wrong UserID or Password        403 Wrong UserID or Password               Pass
-
-	
-  3	  Test a successful LOGOUT command	LOGOUT			          200 OK                         200 OK                                     Pass	
-
-  4	  Test a WHO command by root user	WHO	                   200 OK                          200 OK                                     Pass               
-												                                                                 The list of the active users: 
-												                                                                 John 141.215.69.202  root 127.0.0.1		
-
-  5	Test a WHO command by non-root user	     WHO				401 Unauthorized:                401 Unauthorized:                               Pass
-    												                                                             This command is only 
-												                                                                allowed for the root user.
 
 
                                                                             
