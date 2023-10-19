@@ -1,4 +1,4 @@
-INTRODUCTION: 
+##INTRODUCTION: 
 
 This program was designed to run with C++. The Platform we used was Visual Studio. This is an online Pokémon card trading application that allows for multiple clients to connect to the server simultaneously. The client and server components of this application will communicate with each other using TCP sockets program. The commands you will be able to execute within this application are: BUY, SELL, LIST, BALANCE, QUIT, SHUTDOWN, LOGIN, LOGOUT, DEPOSIT, WHO, and LOOKUP.
 
@@ -33,16 +33,16 @@ l_van			Football
 l_blanket		Security23
 
 
-COMMANDS:
+##COMMANDS:
 
-BUY:
+###BUY:
 In order to buy a Pokemon card you must follow these steps: 
 
 Client > BUY (followed by the Pokemon name, card type, rarity, quantity, card cost, and the owners ID)
 
 Buy Example: BUY Pikachu Electric Common 19.99 2 2
 
-SELL:
+###SELL:
 To sell a Pokemon card you must follow these steps: 
 
 Client > SELL (followed by the Pokemon name, card type, rarity, quantity, card cost, and the user ID you want to sell to)
@@ -50,7 +50,7 @@ Client > SELL (followed by the Pokemon name, card type, rarity, quantity, card c
 Sell Example: SELL Pikachu Electric Common 19.99 2 4
 
 
-LIST: 
+###LIST: 
 To list all records in the Pokemon card table of all Users, you will need to be logged in to a Root users account.
 
 A LIST command issued by a non-root user such as John should return only John’s records.
@@ -75,12 +75,12 @@ ID Card Name Type Rarity Count OwnerID
 5 Charizard Fire Rare 6 John
 
 
-BALANCE:
+###BALANCE:
 Display the USD balance for the selected user A client-server interaction with the BALANCE command looks like:
  Client sends: BALANCE  Server sends: BALANCE  c: 200 OK Balance for user Jane Smith: $90.00
 
 
-SHUTDOWN:
+###SHUTDOWN:
 If a client sends a SHUTDOWN command to the server, it will terminate all connected clients and shut down the server. 
 
 However, only the root user has the authority to execute a server shutdown. 
@@ -95,7 +95,7 @@ Server > Received: SHUTDOWN
 If a non-root user attempts to send a shutdown command, the server will refuse it and send a 401 status code, and an error message accordingly.
 
 
-QUIT:
+###QUIT:
 Only terminate the client. The client exits when it receives the confirmation message from the server.
  
 A client-server interaction with the QUIT command looks like:
@@ -103,14 +103,14 @@ client: QUIT
 client: 200 OK
 
 
-LOGIN:
+###LOGIN:
 -To login to the server, you must enter LOGIN, followed by a space, followed by a UserID, followed by a space, followed by a Password
 
 LOGIN Example:
 Client sends: LOGIN j_doe Passwrd4 
 Server sends: 200 OK 
 
-WHO:
+###WHO:
 -List all active users, including the UserID and the user’s IP addresses. This command is only allowed for the root users.
 
 WHO Example:
@@ -121,7 +121,7 @@ The list of the active users:
 John  141.215.69.202 
 root   127.0.0.1
 
-LOOKUP:
+###LOOKUP:
 -To lookup a Pokemon card name in the list, you must enter LOOKUP followed by a space, followed by a name
 
 LOOKUP Example:
@@ -135,7 +135,7 @@ Client sends: LOOKUP random_card
 Server sends: 404 Your search did not match any records.
 
 
-LOG OUT:
+###LOGOUT:
 To log out of the server, the client enters LOGOUT . The user is also not allowed to send BUY, SELL, LIST, BALANCE, and SHUTDOWN commands after logging out, but it can still send the QUIT commands. This command results in the server terminating the allocated socket and thread for this client. 
 
 LOGOUT Example:
@@ -143,7 +143,7 @@ Client sends: LOGOUT
 Server sends: Recieved: LOGOUT 
 
 
-DEPOSIT:
+###DEPOSIT:
 Deposit USD to the user’s account/record. A user can deposit an amount of USD into their account. A client that wants too deposit an amount of USD to their account must follow the steps below: 
 
 DEPOSIT + a space + the USD amount 
@@ -153,19 +153,19 @@ Client sends: DEPOSIT 40.50
 Server sends: Deposit successfully. New balance $140.50
 
 
-STUDENTS’ ROLES: 
+##STUDENTS’ ROLES: 
 
 Erika Valle-Baird: Lead developer/documenter
 Aiden Chimienti: developer/documenter
 Abeer Waza: developer/documenter
 
 
-BUG’S IN THE CODE: 
+##BUG’S IN THE CODE: 
 
 
 
 
-Test Cases:
+##Test Cases:
 Test #         	Description of Test			Input Value				    Expected Output	    	   Actual Output		                            Test Pass/Fail
 
   1   LOGIN: Test valid user/password	LOGIN j_doe Passwrd4		200 OK		                 	200 OK				                              Pass
