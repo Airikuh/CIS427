@@ -1,0 +1,65 @@
+LOGIN: LOGIN userID password
+
+LIST: LIST
+
+LOGOUT: LOGOUT
+
+WHO: WHO
+
+LOOKUP:
+LOOKUP card_type: LOOKUP Fire
+LOOKUP card_name: LOOKUP Pikachu
+LOOKUP rarity: LOOKUP Common
+etc...
+
+DEPOSIT: DEPOSIT float_name: DEPOSIT 24.99
+
+SHUTDOWN: SHUTDOWN 
+
+
+
+
+
+OUTPUTS-
+LOGIN: 
+correct? 200 OK
+WRONG? "403 Wrong UserID or Password"
+
+
+LIST:
+correct? 200 OK, show specific list
+Regular user? List their records only
+Root user? List records in CARDS database!
+
+
+LOGOUT:
+correct? 200 OK
+**NOT allowed to use buy, sell, list once logged out until logs in again
+
+
+WHO:
+correct? 200 OK, Show list of active users
+
+
+LOOKUP:
+correct? 200 OK, "Found #_matches match", list matching cards
+WRONG? "404 Your search did not match any records."
+
+
+DEPOSIT:
+correct? "deposit successfully. New User balance $usd_balance"
+WRONG? "401 Invalid quantity"?
+
+
+SHUTDOWN:
+correct? 200 OK, ONLY ROOT USER CAN SHUTDOWN!
+WRONG? (any user but root) 401 status code, and an error message 
+
+
+
+USERS:
+USERID 	Password
+root	 root01
+mary	 mary01
+john	 john01
+moe	 moe01
