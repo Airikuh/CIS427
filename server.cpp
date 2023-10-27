@@ -377,6 +377,139 @@ int main(int argc, char* argv[]) {
         cout << "Error returned Result = " << result << endl;
     }
 
+
+
+
+//Adding new users based on P2 User Info Table Requirements
+//NEW MARY
+// Check that mary exists. No? Create entry
+    sql = "SELECT IIF(EXISTS(SELECT 1 FROM Users WHERE  Users.user_name='mary'), 'USER_PRESENT', 'USER_NOT_PRESENT') result;";
+    rc = sqlite3_exec(db, sql, callback, ptr, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+    else if (result == "USER_NOT_PRESENT") {
+        fprintf(stdout, "mary is not present. Attempting to add the user.\n");
+// Add mary to Pokemon Database
+        sql = "INSERT INTO Users VALUES (7, 'mary', 'ann', 'mary', 'mary01', 'mary@abc.com', 100);";
+       // rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+         
+// SQL Execute and Error Handling from Using Database
+//Specific to INSERT, Initializing Database with Values
+        rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+        if (rc != SQLITE_OK) {
+            fprintf(stderr, "SQL error: %s\n", zErrMsg);
+            sqlite3_free(zErrMsg);
+        }
+
+        else {
+            fprintf(stdout, "\tA new user (mary) was added successfully.\n");
+        }
+    }
+    else if (result == "USER_PRESENT") {
+        cout << "\tmary already exists in the Users table.\n";
+    }
+
+//ERROR INSERTING into Database
+    else {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        cout << "Error returned Result = " << result << endl;
+    }
+
+//NEW JOHN USER 
+    // Check that john exists. No? Create entry
+    sql = "SELECT IIF(EXISTS(SELECT 1 FROM Users WHERE  Users.user_name='john'), 'USER_PRESENT', 'USER_NOT_PRESENT') result;";
+    rc = sqlite3_exec(db, sql, callback, ptr, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+    else if (result == "USER_NOT_PRESENT") {
+        fprintf(stdout, "john is not present. Attempting to add the user.\n");
+// Add john to Pokemon Database
+        sql = "INSERT INTO Users VALUES (8, 'john', 'doe', 'john', 'john01', 'john@abc.com', 100);";
+       // rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+         
+// SQL Execute and Error Handling from Using Database
+//Specific to INSERT, Initializing Database with Values
+        rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+        if (rc != SQLITE_OK) {
+            fprintf(stderr, "SQL error: %s\n", zErrMsg);
+            sqlite3_free(zErrMsg);
+        }
+
+        else {
+            fprintf(stdout, "\tA new user (john) was added successfully.\n");
+        }
+    }
+    else if (result == "USER_PRESENT") {
+        cout << "\tjohn already exists in the Users table.\n";
+    }
+
+//ERROR INSERTING into Database
+    else {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        cout << "Error returned Result = " << result << endl;
+    }
+
+
+
+//NEW MOE USER
+    // Check that moe exists. No? Create entry
+    sql = "SELECT IIF(EXISTS(SELECT 1 FROM Users WHERE  Users.user_name='moe'), 'USER_PRESENT', 'USER_NOT_PRESENT') result;";
+    rc = sqlite3_exec(db, sql, callback, ptr, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+    else if (result == "USER_NOT_PRESENT") {
+        fprintf(stdout, "moe is not present. Attempting to add the user.\n");
+// Add moe to Pokemon Database
+        sql = "INSERT INTO Users VALUES (9, 'moe', 'bob', 'moe', 'moe01', 'moe@abc.com', 100);";
+       // rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+         
+// SQL Execute and Error Handling from Using Database
+//Specific to INSERT, Initializing Database with Values
+        rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+        if (rc != SQLITE_OK) {
+            fprintf(stderr, "SQL error: %s\n", zErrMsg);
+            sqlite3_free(zErrMsg);
+        }
+
+        else {
+            fprintf(stdout, "\tA new user (moe) was added successfully.\n");
+        }
+    }
+    else if (result == "USER_PRESENT") {
+        cout << "\tmoe already exists in the Users table.\n";
+    }
+
+//ERROR INSERTING into Database
+    else {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        cout << "Error returned Result = " << result << endl;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 // Check that Pikachu exists. No? Create entry
     sql = "SELECT IIF(EXISTS(SELECT 1 FROM Pokemon_cards WHERE  Pokemon_cards.Card_name='Pikachu'), 'POKEMON_CARD_PRESENT', 'POKEMON_CARD_NOT_PRESENT') result;";
     rc = sqlite3_exec(db, sql, callback, ptr, &zErrMsg);
