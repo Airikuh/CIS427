@@ -13,10 +13,12 @@ You will need a New Terminal console x 2 for client and server windows
 
 Server:
 g++ server.cpp -std=c++11 -ldl -pthread sqlite3.o -o server
+
 ./server
 
 Client:
 g++ client.cpp -o client
+
 ./client 127.0.0.1
 *Must include IP address to compile
 
