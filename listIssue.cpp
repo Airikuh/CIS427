@@ -20,7 +20,7 @@
 using namespace std;
 
 #define SERVER_PORT  9199
-#define MAX_PENDING  9 //changed this from 5 to 9
+#define MAX_PENDING  9 
 #define MAX_LINE     256
 
 struct sockaddr_in srv;
