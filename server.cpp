@@ -87,15 +87,16 @@ string clientData[6];
 vector<loggedUser> list;
 void NewClientConnection();
 void DataFromClient();
+
+string buildCommand(char*);
+
 void* databaseCommands(void*);
 static int callback(void*, int, char**, char**);
 string getData(char*, string);
 bool getData(char*, string*, string);
 
 
-
 // Parses command from buffer sent from client 
-
 string buildCommand(char line[]) {
     string command = "";
     size_t len = strlen(line);
@@ -108,10 +109,6 @@ string buildCommand(char line[]) {
     }
     return command;
 }
-
-
-
-
 
 string clientPassword(char line[], int n) {
     int spaceLocation = n + 2;
@@ -132,15 +129,13 @@ int getMatchedRecordsCount(const string& records) {
                 // Count the number of matched records in the formatted string.
                 int count = 0;
                 size_t pos = 0;
-
                 // Search for line breaks in the string and count the occurrences
                 while ((pos = records.find('\n', pos)) != string::npos) {
                     count++;
                     pos++;
                 }
-
                 return count;
-            }
+}
 
 int main(int argc, char* argv[]) {
 #pragma region Database Setup
@@ -1059,9 +1054,6 @@ int main(int argc, char* argv[]) {
     exit(EXIT_SUCCESS);
 }
 
-
-
-
 //Get information from the User and place into clientData array to be extracted in commands
 string getData(char line[], string command) {
     int l = command.length();
@@ -1436,32 +1428,33 @@ void* databaseCommands(void* userData) {
             }     
 */
 else if (command == "LIST") {
-    string sendStr = "200 OK\n";
-//If a root user display all records in Pokemon_cards table for each owner
-    if (rootUsr) {
-        result = "";
-        string sql = "SELECT * FROM Pokemon_cards";
+   // string sendStr = "200 OK\n";
+    string sendStr;
+    result = "";
 
+    // Check if the user is a root user or a regular user
+    if (id == "1") {
+        // Root user can list all pokemon card records and the owner's first name from Users
+        string sql = "SELECT P.ID, P.Card_name, P.Card_type, P.rarity, P.quantity, P.Card_price, U.first_name "
+                     "FROM Pokemon_cards P "
+                     "JOIN Users U ON P.owner_id = U.ID;";
         rc = sqlite3_exec(db, sql.c_str(), callback, ptr, &zErrMsg);
-        if (rc != SQLITE_OK) {
-            fprintf(stderr, "SQL error: %s\n", zErrMsg);
-            sqlite3_free(zErrMsg);
-        }
-
-        sendStr += "The list of records in the cards database:\nID Card Name Type Rarity Count OwnerID\n" + result + "\n";
-    } else {
-        result = "";
+        sendStr = "The list of records in the cards database:\nID Card Name Type Rarity Count OwnerID\n" + result;
+    }else {
         // Non-root user
+        result = "";
+        // Retrieve the user's first name
         string userSql = "SELECT first_name FROM Users WHERE Users.ID=" + id;
         rc = sqlite3_exec(db, userSql.c_str(), callback, ptr, &zErrMsg);
         if (rc != SQLITE_OK) {
             fprintf(stderr, "SQL error: %s\n", zErrMsg);
             sqlite3_free(zErrMsg);
         }
-
         string userName = result;  // Store the user's first_name
         
-        string cardSql = "SELECT * FROM Pokemon_cards WHERE Pokemon_cards.owner_id=" + id;
+        // Retrieve Pokemon cards for the current user
+    
+        string cardSql = "SELECT ID, Card_name, Card_type, rarity, quantity, Card_price, owner_id FROM Pokemon_cards WHERE Pokemon_cards.owner_id=" + id;
         rc = sqlite3_exec(db, cardSql.c_str(), callback, ptr, &zErrMsg);
         if (rc != SQLITE_OK) {
             fprintf(stderr, "SQL error: %s\n", zErrMsg);
@@ -1471,13 +1464,58 @@ else if (command == "LIST") {
         if (result.empty()) {
             sendStr += "No records in the Pokémon cards table for current user, " + userName + ".";
         } else {
-            sendStr += "The list of records in the Pokémon cards table for current user, " + userName + ":\nCardID Card Name Card Type Rarity Quantity Card Price UserID\n" + result + "\n";
+            sendStr += "The list of records in the Pokémon cards table for current user, " + userName + ":\nID Card Name Type Rarity Quantity Price OwnerID\n" + result + "\n";
         }
     }
 
     send(clientID, sendStr.c_str(), sizeof(Buff), 0);
 }
 
+/*
+//default - origninal edit
+else if (command == "LIST") {
+    string sendStr = "200 OK\n";
+    if (rootUsr) {
+        // Root user - List all records in Pokemon_cards table
+        result = "";
+        string sql = "SELECT * FROM Pokemon_cards";
+        rc = sqlite3_exec(db, sql.c_str(), callback, ptr, &zErrMsg);
+        if (rc != SQLITE_OK) {
+            fprintf(stderr, "SQL error: %s\n", zErrMsg);
+            sqlite3_free(zErrMsg);
+        }
+        sendStr += "The list of records in the cards database:\nID Card Name Type Rarity Quantity Price OwnerID\n" + result + "\n";
+    } else {
+        // Non-root user
+        result = "";
+        // Retrieve the user's first name
+        string userSql = "SELECT first_name FROM Users WHERE Users.ID=" + id;
+        rc = sqlite3_exec(db, userSql.c_str(), callback, ptr, &zErrMsg);
+        if (rc != SQLITE_OK) {
+            fprintf(stderr, "SQL error: %s\n", zErrMsg);
+            sqlite3_free(zErrMsg);
+        }
+        string userName = result;  // Store the user's first_name
+        
+        // Retrieve Pokemon cards for the current user
+    
+        string cardSql = "SELECT ID, Card_name, Card_type, rarity, quantity, Card_price, owner_id FROM Pokemon_cards WHERE Pokemon_cards.owner_id=" + id;
+        rc = sqlite3_exec(db, cardSql.c_str(), callback, ptr, &zErrMsg);
+        if (rc != SQLITE_OK) {
+            fprintf(stderr, "SQL error: %s\n", zErrMsg);
+            sqlite3_free(zErrMsg);
+        }
+
+        if (result.empty()) {
+            sendStr += "No records in the Pokémon cards table for current user, " + userName + ".";
+        } else {
+            sendStr += "The list of records in the Pokémon cards table for current user, " + userName + ":\nID Card Name Type Rarity Quantity Price OwnerID\n" + result + "\n";
+        }
+    }
+
+    send(clientID, sendStr.c_str(), sizeof(Buff), 0);
+}
+*/
             else if (command == "BALANCE") {
 // cout << "Received: BALANCE" << endl;
                 string sql = "SELECT IIF(EXISTS(SELECT 1 FROM Users WHERE Users.ID=" + id + "), 'PRESENT', 'NOT_PRESENT') result;";
@@ -1542,7 +1580,7 @@ else if (command == "LIST") {
         exit(EXIT_SUCCESS);
     } else {
         // For non-root users, send a 401 status code and an error message.
-        send(clientID, "401 Unauthorized: Only root user can execute a SHUTDOWN. ", 69, 0);
+        send(clientID, "401 Unauthorized: Only root user can execute a SHUTDOWN. ", 57, 0);
     }
 }
 
@@ -1645,20 +1683,39 @@ else if (command == "LIST") {
                 send(clientID, sendStr.c_str(), sizeof(Buff), 0);
 
             }
-               else if (command == "LOOKUP") {
+            else if (command == "LOOKUP") {
                 string searchTerm = ""; // Initialize the search term
                 string sendStr;
                 result = "";
 
                 // Extract the search term from the client's command
-                for (int i = (command.length() + 1); i < strlen(Buff); i++) {
-                    if (Buff[i] == '\n')
-                        break;
+                size_t commandLen = command.length();
+                size_t i = commandLen + 1;
+
+                while (i < strlen(Buff) && Buff[i] != '\n') {
                     searchTerm += Buff[i];
+                    i++;
                 }
 
-                // Construct the SQL query to look up Pokémon cards
-                string sql = "SELECT * FROM Pokemon_cards WHERE owner_id = " + id + " AND card_name LIKE '%" + searchTerm + "%';";
+                // Split the search term into individual words
+                vector<string> searchTerms;
+                size_t start = 0;
+                size_t end;
+                while ((end = searchTerm.find(' ', start)) != string::npos) {
+                    searchTerms.push_back(searchTerm.substr(start, end - start));
+                    start = end + 1;
+                }
+                searchTerms.push_back(searchTerm.substr(start));
+
+                // Construct the SQL query to look up Pokémon cards based on card_name, card_type, or rarity
+                string sql = "SELECT * FROM Pokemon_cards WHERE owner_id = " + id + " AND (";
+                for (size_t j = 0; j < searchTerms.size(); j++) {
+                    if (j > 0) {
+                        sql += " OR ";
+                    }
+                    sql += "(card_name = '" + searchTerms[j] + "' OR card_type = '" + searchTerms[j] + "' OR rarity = '" + searchTerms[j] + "')";
+                }
+                sql += ");";
 
                 rc = sqlite3_exec(db, sql.c_str(), callback, ptr, &zErrMsg);
 
@@ -1670,9 +1727,8 @@ else if (command == "LIST") {
                 }
 
                 send(clientID, sendStr.c_str(), sizeof(Buff), 0);
-        
-            }
-            
+        }
+
 // All Else Fails, Invalid Command
             else {
                 cout << "SERVER: INVALID COMMAND" << endl;
