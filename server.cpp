@@ -19,7 +19,7 @@
 
 using namespace std;
 
-#define SERVER_PORT  9199
+#define SERVER_PORT  29270
 #define MAX_PENDING  5
 #define MAX_LINE     256
 
@@ -68,21 +68,6 @@ long thread;
 //Array to hold input from client when dealing with commands
 string clientData[6];
 
-//clientData Holds:
-//Pikachu: clientData[0] -name
-//electric: clientData[1] -type
-//common: clientData[2] -rarity
-//2: clientData[3] -Quantity
-//19.99: clientData[4] -COST of Card
-//3: clientData[5] - buy FROM
-
-//clientData[0]: card_name
-//clientData[1]: card_type
-//clientData[2]: rarity
-//clientData[3]: quantity
-//clientData[4]: card_price
-//clientData[5]: owner_id
-
 //List of users
 vector<loggedUser> list;
 void NewClientConnection();
@@ -116,6 +101,15 @@ int callback_get_balance(void* user_balance, int argc, char** argv, char** azCol
         *((double*)user_balance) = atof(argv[0]);}
 // Continue processing other rows if any
     return 0; }
+
+int callback_get_quantity(void* seller_quantity, int argc, char** argv, char** azColName) {
+    if (argc == 1) {
+// Assuming that the result set has only one column (quantity)
+        *((int*)seller_quantity) = atoi(argv[0]);}
+// Continue processing other rows if any
+    return 0; }
+
+
 
 string clientPassword(char line[], int n) {
     int spaceLocation = n + 2;
@@ -1079,12 +1073,7 @@ string getData(char line[], string command) {
     return info;
 }
 
-//clientData[0]: card_name
-//clientData[1]: card_type
-//clientData[2]: rarity
-//clientData[3]: quantity
-//clientData[4]: card_price
-//clientData[5]: owner_id
+
 
 void* databaseCommands(void* userData) {
     cout << "Username: " << ((userInfo*)userData)->user << endl;;
@@ -1116,6 +1105,7 @@ void* databaseCommands(void* userData) {
                 send(clientID, "You are already logged in!", 27, 0);}
 
      
+//Redid Buy and Sell FUnctions, Previous versions weren't consistent in their outputs
  else if (command == "BUY") {
     char * commandCount = (char*)malloc(sizeof(Buff));
 
@@ -1129,6 +1119,7 @@ printf("Received: \"%s\"\n", commandCount);
     int owner_id;
     char response[MAX_LINE];
     char sql_query[256];
+    char sell_name[50];
 
 
     char* zErrMsg = 0;
@@ -1136,8 +1127,12 @@ printf("Received: \"%s\"\n", commandCount);
         sprintf(response, "403 message format error\nInvalid BUY request format\n");
         send(clientID, response, strlen(response), 0);}
 
+
 //Adding here for database upload fix
 double new_price = card_price;
+
+//adding another quantity
+int sell_q = quantity;
 
 
 // Query the database to get user balance
@@ -1149,11 +1144,54 @@ double new_price = card_price;
         fprintf(stderr, "SQL error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);}
 
-// Check if user has enough balance
+//sprintf(sql_query, "SELECT card_name FROM Pokemon_cards WHERE card_name=%s AND Pokemon_cards.owner_id=%d;", card_name, owner_id);
+//int rc_card = sqlite3_exec(db, sql_query, callback, ptr, &zErrMsg);
+
+    //if (rc_card != SQLITE_OK) {
+        //fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        //sqlite3_free(zErrMsg);}
+
+sprintf(sql_query, "SELECT card_name FROM Pokemon_cards WHERE card_name=%s AND Pokemon_cards.owner_id=%d;", card_name, owner_id);
+int rc_card = sqlite3_exec(db, sql_query, callback, &sell_name, &zErrMsg);
+    if (rc_card != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);}
+
+
+
+
+
+// Check if user has enough balance, If not exit out of buying card
     if (user_balance < card_price * quantity) {
         sprintf(response, "Not enough balance.");
-        printf("%s\n", response);  }
+        printf("%s\n", response); 
+        send(clientID, response, strlen(response), 0); }
 
+//Else user has enough money so finish the purchase
+else{
+
+// Query the database to get user balance
+    //sprintf(sql_query, "SELECT quantity FROM Users WHERE ID=%d;", owner_id);
+      //sprintf(sql_query, "SELECT quantity FROM Pokemon_cards WHERE ID=%d;", owner_id);
+      sprintf(sql_query, "SELECT quantity FROM Pokemon_cards WHERE quantity=%d AND ID=%d;", sell_q, owner_id);
+
+// Declare the variable to store the user's seller's quantity
+        int seller_quantity;
+    int rc_quantity = sqlite3_exec(db, sql_query, callback_get_quantity, &seller_quantity, &zErrMsg);
+    if (rc_quantity != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);}
+
+//still went through :/
+if(seller_quantity < quantity){
+            sprintf(response, "Not enough of these cards.");
+        printf("%s\n", response); 
+        send(clientID, response, strlen(response), 0);
+}
+
+
+
+else{
 // Deduct the price changed to buy_id
     user_balance -= card_price * quantity;
     sprintf(sql_query, "UPDATE Users SET usd_balance=%.2lf WHERE ID=%d;", user_balance, clientID);
@@ -1161,6 +1199,7 @@ double new_price = card_price;
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);}
+
 
 
     sprintf(sql_query, "INSERT INTO Pokemon_Cards (card_name, card_type, rarity, quantity, card_price, owner_id) VALUES ('%s', '%s', '%s', %d, %f, %d);",
@@ -1196,8 +1235,8 @@ double seller_balance;
         sqlite3_free(zErrMsg);}
 
 
-}
-
+}}}
+ 
 
 
     else if (command == "SELL") {
@@ -1271,56 +1310,7 @@ double buyer_balance;
 
     }
 
-                            //this was the previous LIST function 
-                        /*    else if (command == "LIST") {
-                if (idINT == 1) {
-                    result = "";
-// List all records in Pokemon_cards table for owner_id = 1
-                    string sql = "SELECT * FROM Pokemon_cards";
-
-// ERROR Handling: After Select SQL Execution
-                            rc = sqlite3_exec(db, sql.c_str(), callback, ptr, &zErrMsg);
-                            if (rc != SQLITE_OK) {
-                                fprintf(stderr, "SQL error: %s\n", zErrMsg);
-                                sqlite3_free(zErrMsg);    }
-
-                    string sendStr;
-
-                    if (result == "") {
-                        sendStr = "200 OK\n   No records in the Pokemon Cards Database.";
-                    }
-                    else {
-                        sendStr = "200 OK\n   The list of records in the Card database:\nCardID  Card Name Card Type  Rarity Quantity Card Price UserID\n   " + result;
-                    }
-                    send(clientID, sendStr.c_str(), sizeof(Buff), 0);
-                }
-                else {
-                    result = "";
-// List all records in Pokemon_cards table for owner_id = 1
-                    string sql = "SELECT * FROM Pokemon_cards WHERE Pokemon_cards.owner_id=" + id;
-
-
-// ERROR Handling: After Select SQL Execution
-                            rc = sqlite3_exec(db, sql.c_str(), callback, ptr, &zErrMsg);
-                            if (rc != SQLITE_OK) {
-                                fprintf(stderr, "SQL error: %s\n", zErrMsg);
-                                sqlite3_free(zErrMsg);    }
-
-
-
-                    string sendStr;
-
-                    if (result == "") {
-                        sendStr = "200 OK\n   No records in the Card Database.";
-                    }
-                    else {
-// changed here LIST added output
-                        sendStr = "200 OK\n   The list of records in the Card database:\nCardID  Card Name Card Type  Rarity Quantity Card Price UserID\n   " + result;
-                    }
-                    send(clientID, sendStr.c_str(), sizeof(Buff), 0);
-                }
-            }     
-*/
+//current list function
 else if (command == "LIST") {
    // string sendStr = "200 OK\n";
     string sendStr;
@@ -1365,51 +1355,7 @@ else if (command == "LIST") {
     send(clientID, sendStr.c_str(), sizeof(Buff), 0);
 }
 
-/*
-//default - origninal edit
-else if (command == "LIST") {
-    string sendStr = "200 OK\n";
-    if (rootUsr) {
-        // Root user - List all records in Pokemon_cards table
-        result = "";
-        string sql = "SELECT * FROM Pokemon_cards";
-        rc = sqlite3_exec(db, sql.c_str(), callback, ptr, &zErrMsg);
-        if (rc != SQLITE_OK) {
-            fprintf(stderr, "SQL error: %s\n", zErrMsg);
-            sqlite3_free(zErrMsg);
-        }
-        sendStr += "The list of records in the cards database:\nID Card Name Type Rarity Quantity Price OwnerID\n" + result + "\n";
-    } else {
-        // Non-root user
-        result = "";
-        // Retrieve the user's first name
-        string userSql = "SELECT first_name FROM Users WHERE Users.ID=" + id;
-        rc = sqlite3_exec(db, userSql.c_str(), callback, ptr, &zErrMsg);
-        if (rc != SQLITE_OK) {
-            fprintf(stderr, "SQL error: %s\n", zErrMsg);
-            sqlite3_free(zErrMsg);
-        }
-        string userName = result;  // Store the user's first_name
-        
-        // Retrieve Pokemon cards for the current user
-    
-        string cardSql = "SELECT ID, Card_name, Card_type, rarity, quantity, Card_price, owner_id FROM Pokemon_cards WHERE Pokemon_cards.owner_id=" + id;
-        rc = sqlite3_exec(db, cardSql.c_str(), callback, ptr, &zErrMsg);
-        if (rc != SQLITE_OK) {
-            fprintf(stderr, "SQL error: %s\n", zErrMsg);
-            sqlite3_free(zErrMsg);
-        }
 
-        if (result.empty()) {
-            sendStr += "No records in the Pokémon cards table for current user, " + userName + ".";
-        } else {
-            sendStr += "The list of records in the Pokémon cards table for current user, " + userName + ":\nID Card Name Type Rarity Quantity Price OwnerID\n" + result + "\n";
-        }
-    }
-
-    send(clientID, sendStr.c_str(), sizeof(Buff), 0);
-}
-*/
             else if (command == "BALANCE") {
 // cout << "Received: BALANCE" << endl;
                 string sql = "SELECT IIF(EXISTS(SELECT 1 FROM Users WHERE Users.ID=" + id + "), 'PRESENT', 'NOT_PRESENT') result;";
@@ -1478,27 +1424,7 @@ else if (command == "LIST") {
     }
 }
 
-            /*
-            else if (command == "SHUTDOWN" && rootUsr) {
-                send(clientID, "200 OK", 7, 0);
-                sqlite3_close(db);
-                cout << "Closed Database" << endl;
-                close(clientID);
-                cout << "Client Terminated Connection:  " << clientID << endl;
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.at(i).user == u)
-                        list.erase(list.begin() + i);
-                }
-                for (int i = 0; i < list.size(); i++) {
-                    close(nClient[list.at(i).socket]);
-                    pthread_cancel((list.at(i)).myThread);
-                }
-                close(nSocket);
-                cout << "Socket Closed: " << nSocket << endl;
-                pthread_exit(userData);
-                exit(EXIT_SUCCESS);
-            }
-            */
+
             else if (command == "LOGOUT") {
                 send(clientID, "200 OK", 7, 0);
                 for (int i = 0; i < list.size(); i++) {
