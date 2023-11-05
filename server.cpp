@@ -1175,9 +1175,9 @@ else{
         fprintf(stderr, "SQL error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);}
 
-//still went through :/
+//Check if there are enough cards to sell/User has the cards
 if(seller_quantity < quantity){
-            sprintf(response, "Not enough of these cards.");
+            sprintf(response, "Invalid Purchase Attempt");
         printf("%s\n", response); 
         send(clientID, response, strlen(response), 0);
 }
