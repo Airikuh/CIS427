@@ -1144,12 +1144,7 @@ int sell_q = quantity;
         fprintf(stderr, "SQL error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);}
 
-//sprintf(sql_query, "SELECT card_name FROM Pokemon_cards WHERE card_name=%s AND Pokemon_cards.owner_id=%d;", card_name, owner_id);
-//int rc_card = sqlite3_exec(db, sql_query, callback, ptr, &zErrMsg);
 
-    //if (rc_card != SQLITE_OK) {
-        //fprintf(stderr, "SQL error: %s\n", zErrMsg);
-        //sqlite3_free(zErrMsg);}
 
 sprintf(sql_query, "SELECT card_name FROM Pokemon_cards WHERE card_name=%s AND Pokemon_cards.owner_id=%d;", card_name, owner_id);
 int rc_card = sqlite3_exec(db, sql_query, callback, &sell_name, &zErrMsg);
@@ -1170,9 +1165,7 @@ int rc_card = sqlite3_exec(db, sql_query, callback, &sell_name, &zErrMsg);
 //Else user has enough money so finish the purchase
 else{
 
-// Query the database to get user balance
-    //sprintf(sql_query, "SELECT quantity FROM Users WHERE ID=%d;", owner_id);
-      //sprintf(sql_query, "SELECT quantity FROM Pokemon_cards WHERE ID=%d;", owner_id);
+//Check if user has enough to sell.  This also makes sure you have the correct owner_id!
       sprintf(sql_query, "SELECT quantity FROM Pokemon_cards WHERE quantity=%d AND ID=%d;", sell_q, owner_id);
 
 // Declare the variable to store the user's seller's quantity
