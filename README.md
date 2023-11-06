@@ -197,24 +197,26 @@ Abeer Waza: developer/documenter
 # Server and Client:
 <img width="879" alt="Screen Shot 2023-11-02 at 3 55 06 AM" src="https://github.com/Airikuh/CIS427/assets/114634736/221c5278-d000-4307-b70c-916229c16f59">
 
-# Login 
+### Login 
 
-# Buy
+### Buy
 
-# Sell
+### Sell
 
-# Balance
+### Balance
 
-# List
+### Deposit
 
-# Who
+### List
 
-# Lookup
+### Who
+
+### Lookup
 
 
 
-# Logout
+### Logout
 
-# Quit
+### Quit
 
 
