@@ -192,6 +192,29 @@ Abeer Waza: developer/documenter
 <img width="592" alt="Screen Shot 2023-10-19 at 11 03 02 AM" src="https://github.com/Airikuh/CIS427/assets/114634736/32c02bda-a7ce-4883-acfd-cbb6c1a12803">
 <img width="591" alt="Screen Shot 2023-10-19 at 11 03 14 AM" src="https://github.com/Airikuh/CIS427/assets/114634736/64bb8f08-40d6-4906-8231-1724ccec9747">
 
-## Server and Client Screenshots 	
+## Screenshots of Command Outputs:
+
+# Server and Client:
 <img width="879" alt="Screen Shot 2023-11-02 at 3 55 06 AM" src="https://github.com/Airikuh/CIS427/assets/114634736/221c5278-d000-4307-b70c-916229c16f59">
+
+# Login 
+
+# Buy
+
+# Sell
+
+# Balance
+
+# List
+
+# Who
+
+# Lookup
+
+
+
+# Logout
+
+# Quit
+
 
