@@ -1349,7 +1349,6 @@ else if (command == "LIST") {
         }
     }
 
-    //send(clientID, sendStr.c_str(), sendStr.length(), 0);
     send(clientID, sendStr.c_str(), sizeof(Buff), 0);
 }
 
