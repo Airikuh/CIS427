@@ -1106,7 +1106,7 @@ void* databaseCommands(void* userData) {
 
      
 //Redid Buy and Sell FUnctions, Previous versions weren't consistent in their outputs
- else if (command == "BUY") {
+else if (command == "BUY") {
     char * commandCount = (char*)malloc(sizeof(Buff));
 
 strcpy(commandCount, Buff);
@@ -1134,6 +1134,8 @@ double new_price = card_price;
 //adding another quantity
 int sell_q = quantity;
 
+int update_sell_q = quantity;
+
 
 // Query the database to get user balance
     sprintf(sql_query, "SELECT usd_balance FROM Users WHERE ID=%d;", clientID);
@@ -1145,17 +1147,6 @@ int sell_q = quantity;
         sqlite3_free(zErrMsg);}
 
 
-
-sprintf(sql_query, "SELECT card_name FROM Pokemon_cards WHERE card_name=%s AND Pokemon_cards.owner_id=%d;", card_name, owner_id);
-int rc_card = sqlite3_exec(db, sql_query, callback, &sell_name, &zErrMsg);
-    if (rc_card != SQLITE_OK) {
-        fprintf(stderr, "SQL error: %s\n", zErrMsg);
-        sqlite3_free(zErrMsg);}
-
-
-
-
-
 // Check if user has enough balance, If not exit out of buying card
     if (user_balance < card_price * quantity) {
         sprintf(response, "Not enough balance.");
@@ -1164,8 +1155,7 @@ int rc_card = sqlite3_exec(db, sql_query, callback, &sell_name, &zErrMsg);
 
 //Else user has enough money so finish the purchase
 else{
-
-//Check if user has enough to sell.  This also makes sure you have the correct owner_id!
+//Might need to change this to owner_id
       sprintf(sql_query, "SELECT quantity FROM Pokemon_cards WHERE quantity=%d AND ID=%d;", sell_q, owner_id);
 
 // Declare the variable to store the user's seller's quantity
@@ -1175,7 +1165,9 @@ else{
         fprintf(stderr, "SQL error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);}
 
+
 //Check if there are enough cards to sell/User has the cards
+//If dont own card quantity = 0!!!!
 if(seller_quantity < quantity){
             sprintf(response, "Invalid Purchase Attempt");
         printf("%s\n", response); 
@@ -1195,6 +1187,9 @@ else{
 
 
 
+
+
+else{
     sprintf(sql_query, "INSERT INTO Pokemon_Cards (card_name, card_type, rarity, quantity, card_price, owner_id) VALUES ('%s', '%s', '%s', %d, %f, %d);",
         card_name, card_type, rarity, quantity, new_price, clientID);
 
@@ -1202,6 +1197,7 @@ else{
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);}
+
 
 
 // Success response
@@ -1228,8 +1224,29 @@ double seller_balance;
         sqlite3_free(zErrMsg);}
 
 
+        //Still need to implement: REDUCE THE SELLER'S QUANTITY
+//Adding here to try to reduce seller's quantity
+
+    sprintf(sql_query, "SELECT quantity FROM Pokemon_cards WHERE Card_name=%s AND owner_id=%d;", card_name, owner_id);
+int sell_quantity;
+    int new_rc_update = sqlite3_exec(db, sql_query, callback_get_quantity, &sell_quantity, &zErrMsg);
+    if (new_rc_update != SQLITE_OK) {
+        //Error happening here
+        fprintf(stderr, "SQL error Happening Here?: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);}
+
+
+sell_quantity -= update_sell_q;
+//added card name!
+    sprintf(sql_query, "UPDATE Pokemon_cards SET quantity=%d WHERE Card_name=%s AND owner_id=%d;", card_name, sell_quantity, owner_id);
+    new_rc_update = sqlite3_exec(db, sql_query, 0, 0, &zErrMsg);
+    if (new_rc_update != SQLITE_OK) {
+        fprintf(stderr, "SQL error?: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);}
+//to here
+
 }}}
- 
+}
 
 
     else if (command == "SELL") {
