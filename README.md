@@ -25,7 +25,7 @@ g++ client.cpp -o client
 
 Users you can log in to:
 
-UserID and Password:
+UserIDs and Passwords of available users to login too:
 
 root
 root01
