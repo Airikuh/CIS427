@@ -194,28 +194,36 @@ Abeer Waza: developer/documenter
 
 ## Screenshots of Command Outputs:
 
-# Server and Client:
+# Server and Client (WHO command):
 <img width="879" alt="Screen Shot 2023-11-02 at 3 55 06 AM" src="https://github.com/Airikuh/CIS427/assets/114634736/221c5278-d000-4307-b70c-916229c16f59">
 
 ### Login 
+<img width="820" alt="LOGIN" src="https://github.com/Airikuh/CIS427/assets/114634736/72ae7319-0854-441c-b35a-89e804d93aaa">
 
 ### Buy
 
 ### Sell
 
-### Balance
+### Balance & Deposit
+<img width="822" alt="BALANCE_DEPOSIT" src="https://github.com/Airikuh/CIS427/assets/114634736/5ad860e8-0853-41ed-a35a-01213ea0c3da">
 
-### Deposit
 
 ### List
+<img width="708" alt="LIST" src="https://github.com/Airikuh/CIS427/assets/114634736/8792c06e-0613-4dc2-aa9c-6ccdd9725212">
 
-### Who
+
 
 ### Lookup
 <img width="738" alt="Screen Shot 2023-11-05 at 11 48 14 PM" src="https://github.com/Airikuh/CIS427/assets/114634736/3deb091f-fd2b-4306-a31a-c2e9af0aa8a7">
 
 ### Logout
+<img width="713" alt="LOGOUT" src="https://github.com/Airikuh/CIS427/assets/114634736/31a1d9a6-15c0-4c9b-8964-fbc79965d32f">
 
 ### Quit
+<img width="893" alt="QUIT" src="https://github.com/Airikuh/CIS427/assets/114634736/73e5a6c8-7dcf-454e-9afe-1c34634c069b">
+
+### Shutdown
+<img width="988" alt="Screen Shot 2023-11-05 at 11 54 25 PM" src="https://github.com/Airikuh/CIS427/assets/114634736/f5405c1e-1794-44ad-85ae-3033091228af">
+
 
 
