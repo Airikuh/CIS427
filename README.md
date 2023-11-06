@@ -9,7 +9,7 @@ To run the code you will need to follow these steps:
 
 Connect first to global protectant. Then you can run Bitvise SSH Client
 After connected to UMICH Server- Make sure you have uploaded both server and client files and the sqlite files (3 Sqlite files total) to the umich server: Bitvise SSH.
-You will need a New Terminal console x 2 for client and server windows 
+You will need a New Terminal console x 2 or more for client and server windows.
 
 Server:
 g++ server.cpp -std=c++11 -ldl -pthread sqlite3.o -o server
@@ -44,6 +44,15 @@ Football
 
 l_blanket
 Security23
+
+mary
+mary01
+
+john
+john01 
+
+moe
+moe01 
 
 
 ## COMMANDS:
