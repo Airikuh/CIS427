@@ -19,9 +19,9 @@
 
 using namespace std;
 
-#define SERVER_PORT  9989
+#define SERVER_PORT  9955
 #define MAX_PENDING  5
-#define MAX_LINE     256
+#define MAX_LINE     10000
 
 struct sockaddr_in srv;
 char buf[MAX_LINE];
@@ -1094,7 +1094,7 @@ void* databaseCommands(void* userData) {
     else {
         rootUsr = false;}
     while (1){
-        char Buff[256] = { 0, };
+        char Buff[10000] = { 0, };
         while ((buf_len = (recv(clientID, Buff, sizeof(Buff), 0)))) {
 // Print out received message per assignment
             cout << "SERVER: Received: " << Buff << endl;
@@ -1105,7 +1105,6 @@ void* databaseCommands(void* userData) {
                 send(clientID, "You are already logged in!", 27, 0);}
 
      
-
 //Function had to be completely redone. Had been unstable and inconsistent. This version is consitent. 
  else if (command == "BUY") {
     char * commandCount = (char*)malloc(sizeof(Buff));
@@ -1375,23 +1374,27 @@ sell_quantity = sell_quantity - update_sell_q;
 }
     }
 
-//current list function
+
+
 else if (command == "LIST") {
-   // string sendStr = "200 OK\n";
     string sendStr;
-    result = "";
+    result = ""; // Clear the result
 
     // Check if the user is a root user or a regular user
     if (id == "1") {
+            result = ""; // Clear the result
         // Root user can list all pokemon card records and the owner's first name from Users
         string sql = "SELECT P.ID, P.Card_name, P.Card_type, P.rarity, P.quantity, P.Card_price, U.first_name "
                      "FROM Pokemon_cards P "
                      "JOIN Users U ON P.owner_id = U.ID;";
         rc = sqlite3_exec(db, sql.c_str(), callback, ptr, &zErrMsg);
         sendStr = "The list of records in the cards database:\nID Card Name Type Rarity Count OwnerID\n" + result;
-    }else {
+
+    } else {
         // Non-root user
+        // Clear the result for new data
         result = "";
+
         // Retrieve the user's first name
         string userSql = "SELECT first_name FROM Users WHERE Users.ID=" + id;
         rc = sqlite3_exec(db, userSql.c_str(), callback, ptr, &zErrMsg);
@@ -1400,10 +1403,13 @@ else if (command == "LIST") {
             sqlite3_free(zErrMsg);
         }
         string userName = result;  // Store the user's first_name
-        
+
         // Retrieve Pokemon cards for the current user
-    
-        string cardSql = "SELECT ID, Card_name, Card_type, rarity, quantity, Card_price, owner_id FROM Pokemon_cards WHERE Pokemon_cards.owner_id=" + id;
+        result = ""; // Clear the result for new data
+        string cardSql = "SELECT P.ID, P.Card_name, P.Card_type, P.rarity, P.quantity, P.Card_price, U.first_name "
+                 "FROM Pokemon_cards P "
+                 "JOIN Users U ON P.owner_id = U.ID "
+                 "WHERE P.owner_id = " + id;
         rc = sqlite3_exec(db, cardSql.c_str(), callback, ptr, &zErrMsg);
         if (rc != SQLITE_OK) {
             fprintf(stderr, "SQL error: %s\n", zErrMsg);
@@ -1419,7 +1425,6 @@ else if (command == "LIST") {
 
     send(clientID, sendStr.c_str(), sizeof(Buff), 0);
 }
-
 
             else if (command == "BALANCE") {
 // cout << "Received: BALANCE" << endl;
@@ -1748,8 +1753,8 @@ void DataFromClient()
             if (FD_ISSET(nClient[nIndex], &fr))
             {
 // Read the data from client
-                char sBuff[256] = { 0, };
-                int nRet = recv(nClient[nIndex], sBuff, 256, 0);
+                char sBuff[10000] = { 0, };
+                int nRet = recv(nClient[nIndex], sBuff, 10000, 0);
                 if (nRet < 0)
                 {
 // This happens when client closes connection abruptly
