@@ -1106,7 +1106,7 @@ void* databaseCommands(void* userData) {
 
      
 //Redid Buy and Sell FUnctions, Previous versions weren't consistent in their outputs
-else if (command == "BUY") {
+ else if (command == "BUY") {
     char * commandCount = (char*)malloc(sizeof(Buff));
 
 strcpy(commandCount, Buff);
@@ -1227,7 +1227,10 @@ double seller_balance;
         //Still need to implement: REDUCE THE SELLER'S QUANTITY
 //Adding here to try to reduce seller's quantity
 
-    sprintf(sql_query, "SELECT quantity FROM Pokemon_cards WHERE Card_name=%s AND owner_id=%d;", card_name, owner_id);
+
+
+
+    sprintf(sql_query, "SELECT quantity FROM Pokemon_cards WHERE owner_id=%d;", owner_id);
 int sell_quantity;
     int new_rc_update = sqlite3_exec(db, sql_query, callback_get_quantity, &sell_quantity, &zErrMsg);
     if (new_rc_update != SQLITE_OK) {
@@ -1238,7 +1241,7 @@ int sell_quantity;
 
 sell_quantity -= update_sell_q;
 //added card name!
-    sprintf(sql_query, "UPDATE Pokemon_cards SET quantity=%d WHERE Card_name=%s AND owner_id=%d;", card_name, sell_quantity, owner_id);
+    sprintf(sql_query, "UPDATE Pokemon_cards SET quantity=%d WHERE owner_id=%d;", sell_quantity, owner_id);
     new_rc_update = sqlite3_exec(db, sql_query, 0, 0, &zErrMsg);
     if (new_rc_update != SQLITE_OK) {
         fprintf(stderr, "SQL error?: %s\n", zErrMsg);
@@ -1247,7 +1250,6 @@ sell_quantity -= update_sell_q;
 
 }}}
 }
-
 
     else if (command == "SELL") {
         char * commandCount = (char*)malloc(sizeof(Buff));
