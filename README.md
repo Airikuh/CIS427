@@ -212,8 +212,7 @@ Abeer Waza: developer/documenter
 ### Who
 
 ### Lookup
-
-
+<img width="738" alt="Screen Shot 2023-11-05 at 11 48 14 PM" src="https://github.com/Airikuh/CIS427/assets/114634736/3deb091f-fd2b-4306-a31a-c2e9af0aa8a7">
 
 ### Logout
 
