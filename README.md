@@ -126,14 +126,14 @@ client: 200 OK
 
 
 ### LOGIN:
--To login to the server, you must enter LOGIN, followed by a space, followed by a UserID, followed by a space, followed by a Password
+To login to the server, you must enter LOGIN, followed by a space, followed by a UserID, followed by a space, followed by a Password
 
 LOGIN Example:
 Client sends: LOGIN j_doe Passwrd4 
 Server sends: 200 OK 
 
 ### WHO:
--List all active users, including the UserID and the user’s IP addresses. This command is only allowed for the root users.
+List all active users, including the UserID and the user’s IP addresses. This command is only allowed for the root users.
 
 WHO Example:
 
@@ -144,7 +144,7 @@ John  141.215.69.202
 root   127.0.0.1
 
 ### LOOKUP:
--To lookup a Pokemon card name in the list, you must enter LOOKUP followed by a space, followed by a name
+To lookup a Pokemon card name in the list, you must enter LOOKUP followed by a space, followed by a name
 
 LOOKUP Example:
 Client sends: LOOKUP Char 
@@ -182,8 +182,7 @@ Aiden Chimienti: developer/documenter
 Abeer Waza: developer/documenter
 
 
-## BUG’S IN THE CODE: 
-
+## BUG’S IN THE CODE: NONE
 
 
 
