@@ -201,8 +201,10 @@ Abeer Waza: developer/documenter
 <img width="820" alt="LOGIN" src="https://github.com/Airikuh/CIS427/assets/114634736/72ae7319-0854-441c-b35a-89e804d93aaa">
 
 ### Buy
+<img width="624" alt="BUY" src="https://github.com/Airikuh/CIS427/assets/114634736/70b4404c-fc2b-43b1-9732-e8d4b4d7e81c">
 
 ### Sell
+<img width="672" alt="SELL" src="https://github.com/Airikuh/CIS427/assets/114634736/9a8b27e2-bad8-4ff1-8e07-6e1d83552afd">
 
 ### Balance & Deposit
 <img width="822" alt="BALANCE_DEPOSIT" src="https://github.com/Airikuh/CIS427/assets/114634736/5ad860e8-0853-41ed-a35a-01213ea0c3da">
