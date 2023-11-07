@@ -182,8 +182,8 @@ Aiden Chimienti: developer/documenter
 Abeer Waza: developer/documenter
 
 
-## BUG’S IN THE CODE: NONE
-
+## BUG’S IN THE CODE: 
+NONE
 
 
 ## Test Cases:
