@@ -2,6 +2,8 @@
 
 This program was designed to run with C++. The Platform we used was Visual Studio. This is an online Pokémon card trading application that allows for multiple clients to connect to the server simultaneously. The client and server components of this application will communicate with each other using TCP sockets program. The commands you will be able to execute within this application are: BUY, SELL, LIST, BALANCE, QUIT, SHUTDOWN, LOGIN, LOGOUT, DEPOSIT, WHO, and LOOKUP.
 
+## Link to video:
+https://youtu.be/GBXpREjR4B0?si=DNa1-5EKCqH9DLLa
 
 ## Running Instructions: 
 
