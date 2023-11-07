@@ -177,9 +177,15 @@ Server sends: Deposit successfully. New balance $140.50
 
 ## STUDENTS’ ROLES: 
 
-Erika Valle-Baird: Lead developer/documenter
-Aiden Chimienti: developer/documenter
-Abeer Waza: developer/documenter
+Erika Valle-Baird: 
+Lead developer/documenter
+
+Aiden Chimienti: 
+developer/documenter
+
+Abeer Waza: 
+developer/documenter
+
 
 
 ## BUG’S IN THE CODE: 
